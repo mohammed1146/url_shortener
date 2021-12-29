@@ -17,7 +17,7 @@ services:
     build:
       context: .
       dockerfile: php/Dockerfile
-    container_name: url_shortner_php
+    container_name: url_shortener_php
     volumes:
       - ./src:/var/www/html
     networks:
@@ -25,7 +25,7 @@ services:
 
   mysql:
     image: library/mysql:8.0.22
-    container_name: url_shortner_mysql
+    container_name: url_shortener_mysql
     restart: unless-stopped
     tty: true
     ports:
@@ -33,7 +33,7 @@ services:
     volumes:
       - myaql_data:/var/lib/mysql
     environment:
-      MYSQL_DATABASE: url_shortner
+      MYSQL_DATABASE: url_shortener
       MYSQL_USER: user
       MYSQL_PASSWORD: secret
       SERVICE_TAGS: dev

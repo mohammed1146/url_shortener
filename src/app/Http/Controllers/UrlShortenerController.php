@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\UrlShortener\Infrastructure\Interface\IRepository;
 use App\UrlShortener\Url\Interface\IUrlShortener;
-use App\UrlShortener\Url\Service\UrlShortener;
 use Illuminate\Http\Request;
 
 class UrlShortenerController extends Controller
