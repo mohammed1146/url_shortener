@@ -1,0 +1,63 @@
+version: "3"
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    container_name: url_shortner_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./src:/var/www/html
+    networks:
+      - backend
+
+  php:
+    build:
+      context: .
+      dockerfile: php/Dockerfile
+    container_name: url_shortner_php
+    volumes:
+      - ./src:/var/www/html
+    networks:
+      - backend
+
+  mysql:
+    image: library/mysql:8.0.22
+    container_name: url_shortner_mysql
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    volumes:
+      - myaql_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: url_shortner
+      MYSQL_USER: user
+      MYSQL_PASSWORD: secret
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+      MYSQL_RANDOM_ROOT_PASSWORD:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - backend
+
+  composer:
+    image: library/composer:2.2.1
+    container_name: composer
+    volumes:
+      - ./src:/var/www/html
+    working_dir: /var/www/html
+    entrypoint: [ 'composer' ]
+    depends_on:
+      - php
+    networks:
+      - backend
+
+volumes:
+  myaql_data:
+
+networks:
+  backend:
+    driver: bridge
